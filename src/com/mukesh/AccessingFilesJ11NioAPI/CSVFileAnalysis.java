@@ -13,20 +13,25 @@ public class CSVFileAnalysis {
 
         try (Stream<String> lines = Files.lines(path);){
 
-            lines.filter(line -> !line.startsWith("#")).map(CSVFileAnalysis::lineToPerson).forEach(System.out::println);
+            lines.filter(line -> !line.startsWith("#")).flatMap(CSVFileAnalysis::lineToPerson).forEach(System.out::println);
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    private static Person lineToPerson(String line) {
-        String[] elements = line.split(";");
-        String name = elements[0];
-        int age = Integer.parseInt(elements[1]);
-        String city = elements[2];
+    private static Stream<Person> lineToPerson(String line) {
+        try {
+            String[] elements = line.split(";");
+            String name = elements[0];
+            int age = Integer.parseInt(elements[1]);
+            String city = elements[2];
 
-        Person p = new Person(name, age, city);
-        return p;
+            Person p = new Person(name, age, city);
+            return Stream.of(p);
+        } catch (Exception e){
+
+        }
+        return Stream.empty();
     }
 }
