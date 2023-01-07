@@ -11,11 +11,9 @@ public class CSVFileAnalysis {
     public static void main(String[] args){
         Path path = Path.of("files/data.csv");
 
-        Function<String, Person> lineToPerson = line -> lineToPerson(line);
-
         try (Stream<String> lines = Files.lines(path);){
 
-            lines.filter(line -> !line.startsWith("#")).map(lineToPerson).forEach(System.out::println);
+            lines.filter(line -> !line.startsWith("#")).map(CSVFileAnalysis::lineToPerson).forEach(System.out::println);
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
